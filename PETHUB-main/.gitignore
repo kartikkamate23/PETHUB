@@ -1,0 +1,21 @@
+# Build output
+build/
+target/
+*.class
+*.war
+
+# IDE metadata
+.metadata/
+.idea/
+*.iml
+
+# Local configuration and secrets
+.env
+*.local
+
+# Logs
+*.log
+
+# OS noise
+Thumbs.db
+.DS_Store

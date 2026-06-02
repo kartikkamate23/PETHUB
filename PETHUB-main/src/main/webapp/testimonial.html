@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonial Section</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #fff;
+        }
+
+        .testimonial {
+            background: linear-gradient(135deg, #f7e441, #fcb045);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .h1-font {
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .cards {
+            width: 90%;
+            margin: auto;
+        }
+
+        .card-test {
+            height: 640px;
+            width: 100%;  
+            border: 2px solid black;
+            background-color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 0 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card-test:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-test img {
+            height: 300px;
+            width: 250px;
+            object-fit: cover;
+            margin: 0 auto;
+            padding-right: 20px;
+        }
+
+        .card-test p {
+            padding-top: 10px;
+            font-size: 19px;
+            line-height: 1.5;
+        }
+
+        .card-test-name {
+            font-size: 35px;
+            text-align: right;
+            color: rgb(27, 27, 255);
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .cards {
+                margin: 20px auto;
+            }
+
+            .card-test {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .h1-font {
+                font-size: 40px;
+            }
+
+            .card-test p {
+                font-size: 16px;
+            }
+
+            .cards {
+                margin: 20px auto;
+            }
+
+            .card-test {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="testimonial">
+            <h1 class="h1-font">What Our Happy Clients Say!</h1>
+            <div class="cards">
+                <div class="card-test">
+                    <img src="img/dogs.png" alt="Happy dog at a pet care facility">
+                    <p>Thanks to staff, we no longer worry about leaving Bella behind when we travel. The staff is so caring and attentive, and the boarding facilities are top-notch. Highly recommend!</p>
+                    <p class="card-test-name">- Rohit</p>
+                </div>
+                <div class="card-test">
+                    <img src="img/cat.avif" alt="Shy cat being groomed">
+                    <p>Our cat, Leo, is usually very shy with strangers, but the caregivers at pet care won him over! The grooming service was amazing, and the updates throughout the day gave us peace of mind.</p>
+                    <p class="card-test-name">- Ananya</p>
+                </div>
+                <div class="card-test">
+                    <img src="img/cat2.jfif.jpg" alt="Pampered cat after grooming">
+                    <p>Nikki feels pampered after every grooming session, and we love their friendly service. Highly recommended for all pet lovers!</p>
+                    <p class="card-test-name">- Suhail & Pamina</p>
+                </div>
+                <div class="card-test">
+                    <img src="img/fish.jpg" alt="Shimmering fish in an aquarium">
+                    <p>This vibrant fish, with its shimmering scales and smooth movements, brings a sense of peace and beauty to any space. Perfect for creating a calming atmosphere.</p>
+                    <p class="card-test-name">- John Mathew</p>
+                </div>
+                <div class="card-test">
+                    <img src="img/Dogs1.png" alt="Playful puppy at doggy daycare">
+                    <p>Our puppy, Rocky, had the best time at doggy daycare! He gets so excited every time we drop him off. It's wonderful to know he’s being cared for and entertained all day!</p>
+                    <p class="card-test-name">- Neha</p>
+                </div>
+                <div class="card-test">
+                    <img src="img/birds-cage.jpg" alt="Colorful birds flying in a cage">
+                    <p>These colorful birds, with their melodic chirps and playful flights, add joy and liveliness to their surroundings. Perfect companions for nature lovers.</p>
+                    <p class="card-test-name">- Arun</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery and Slick Carousel JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.cards').slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 1000,
+                dots: true, // Add dots for navigation
+                arrows: true, // Optionally add arrows for manual navigation
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+</body>
+</html>
