@@ -56,41 +56,50 @@ public class Registration {
 		return "failure";
 
 	}
-	public String login(String email,String pass) {
-		String status1="" ,id="";
-		String uname="" ,emails="";
-		String query="SELECT * FROM USER WHERE EMAIL='"+email +"'and Password='"+pass+"';";
 
-		try {
-			Statement st=null;
-			ResultSet rs=null;
-			st=con.createStatement();
-			rs=st.executeQuery(query);
-			boolean b=rs.next();
-			if(b==true) {
-				id=rs.getString("id");
+	public String login(String email, String pass) {
 
-				uname=rs.getString("name");
-				emails=rs.getString("email");
-				se.setAttribute("uname", uname);
-				se.setAttribute("email", emails);
-				se.setAttribute("id", id);
+    String status = "failure";
 
-				status1="success";
+    String query =
+            "SELECT * FROM user WHERE email = ? AND password = ?";
 
-			}
-			else {
-				status1="failure";
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    try (PreparedStatement ps = con.prepareStatement(query)) {
 
+        System.out.println("========== LOGIN DEBUG ==========");
+        System.out.println("EMAIL = " + email);
+        System.out.println("PASS = " + pass);
 
-		return status1;
+        ps.setString(1, email.trim());
+        ps.setString(2, pass.trim());
 
-	}
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            String id = rs.getString("id");
+            String uname = rs.getString("name");
+            String emails = rs.getString("email");
+
+            se.setAttribute("uname", uname);
+            se.setAttribute("email", emails);
+            se.setAttribute("id", id);
+
+            System.out.println("LOGIN SUCCESS");
+            status = "success";
+
+        } else {
+
+            System.out.println("LOGIN FAILED");
+            status = "failure";
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return status;
+}
 	public Student getInfo() {
 		Statement st = null;
 		ResultSet rs=null;
