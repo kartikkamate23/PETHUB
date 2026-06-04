@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.MVC.Config.Db;
 
@@ -292,6 +294,7 @@ public class Registration {
 		ResultSet rs = null;
 		ArrayList<Dproduct> al = new ArrayList<Dproduct>();
 		try {
+			ensureCategorySeeded(animal);
 			st = con.createStatement();
 			String qry = "select * from products where p_category='" + animal + "';";
 			rs = st.executeQuery(qry);
@@ -310,6 +313,157 @@ public class Registration {
 			e.printStackTrace();
 		}
 		return al;
+	}
+
+	private static final int MIN_PRODUCTS_PER_CATEGORY = 15;
+
+	private static final Map<String, String[]> SEED_IMAGES = new HashMap<>();
+	static {
+		SEED_IMAGES.put("dogfood", new String[] {"Dogfood1.webp", "Dogfood2.webp", "Dogfood3.webp", "Dogfood41.webp", "Dogfood51.webp", "Dogfood6.webp"});
+		SEED_IMAGES.put("dogaccessories", new String[] {"Dogaccessories1.webp", "Dogaccessories2.webp", "Dogaccessories3.webp", "Dogaccessories4.jpg", "Dogaccessories5.webp"});
+		SEED_IMAGES.put("doggrooming", new String[] {"Doggrooming1.webp", "Doggrooming2.webp", "Doggrooming3.webp", "Doggrooming4.webp", "Doggrooming5.webp"});
+		SEED_IMAGES.put("dogtreats", new String[] {"Dogtreats1.webp", "Dogtreats2.webp", "Dogtreats3.webp", "pedigree.webp", "grainzo1.webp"});
+		SEED_IMAGES.put("catfood", new String[] {"catfood1.webp", "catfood2.webp", "catfood3.webp", "catfood4.webp", "catfood5.webp"});
+		SEED_IMAGES.put("cataccessories", new String[] {"cataccessories1.webp", "cataccessories2.webp", "cataccessories3.webp", "cataccessories4.webp", "cataccessories5.webp", "cataccessories6.webp"});
+		SEED_IMAGES.put("catgrooming", new String[] {"catgrooming1.webp", "catgrooming2.webp", "catgrooming3.webp", "catgrooming4.webp", "catgrooming5.webp"});
+		SEED_IMAGES.put("cattreats", new String[] {"cattreats1.webp", "cattreats2.webp", "cattreats3.webp", "catpic.webp", "catimg1.webp"});
+		SEED_IMAGES.put("Birds", new String[] {"Bird.webp", "Bird11.jpg", "Bird12.jpg", "Bird13.jpg", "Bird14.jpg", "Bird15.jpg"});
+		SEED_IMAGES.put("fish", new String[] {"Fish.webp", "Fish1.webp", "fish1.jpg", "fish2.jpg", "fish3.jpg", "fish4.jpg", "fish5.jpg"});
+	}
+
+	private void ensureCategorySeeded(String category) {
+		if (con == null || category == null || !SEED_IMAGES.containsKey(category)) {
+			return;
+		}
+
+		int existing = countProducts(category);
+		for (int i = existing + 1; i <= MIN_PRODUCTS_PER_CATEGORY; i++) {
+			insertSeedProduct(category, i);
+		}
+	}
+
+	private int countProducts(String category) {
+		String sql = "SELECT COUNT(*) FROM products WHERE p_category = ?";
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, category);
+			try (ResultSet rs = ps.executeQuery()) {
+				return rs.next() ? rs.getInt(1) : 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return MIN_PRODUCTS_PER_CATEGORY;
+		}
+	}
+
+	private void insertSeedProduct(String category, int index) {
+		String[] images = SEED_IMAGES.get(category);
+		String image = images[(index - 1) % images.length];
+		String image1 = images[index % images.length];
+		String image2 = images[(index + 1) % images.length];
+		String name = buildSeedName(category, index);
+		int cost = buildSeedCost(category, index);
+		String details = buildSeedDetails(category);
+		String info = name + " is part of the Hub4Pets starter catalog. It includes dependable quality, pet-safe materials or nutrition, and everyday value for customers.";
+
+		String sql = "INSERT INTO products (p_name, p_image, p_cost, p_details, p_category) VALUES (?, ?, ?, ?, ?)";
+		try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			ps.setString(1, name);
+			ps.setString(2, image);
+			ps.setInt(3, cost);
+			ps.setString(4, details);
+			ps.setString(5, category);
+			ps.executeUpdate();
+
+			try (ResultSet keys = ps.getGeneratedKeys()) {
+				if (keys.next()) {
+					insertSeedProductDetails(keys.getInt(1), image, image1, image2, name, cost, details, category, info);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void insertSeedProductDetails(int id, String image, String image1, String image2, String name, int cost, String details, String category, String info) {
+		String sql = "INSERT INTO productdetails (p_id, p_image, p_image1, p_image2, p_name, p_cost, p_details, p_category, p_info) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) "
+				+ "ON DUPLICATE KEY UPDATE p_image = VALUES(p_image), p_image1 = VALUES(p_image1), p_image2 = VALUES(p_image2), "
+				+ "p_name = VALUES(p_name), p_cost = VALUES(p_cost), p_details = VALUES(p_details), p_category = VALUES(p_category), p_info = VALUES(p_info)";
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, id);
+			ps.setString(2, image);
+			ps.setString(3, image1);
+			ps.setString(4, image2);
+			ps.setString(5, name);
+			ps.setInt(6, cost);
+			ps.setString(7, details);
+			ps.setString(8, category);
+			ps.setString(9, info);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String buildSeedName(String category, int index) {
+		switch (category) {
+			case "dogfood": return "Dog Nutrition Pack " + index;
+			case "dogaccessories": return "Dog Accessory Essential " + index;
+			case "doggrooming": return "Dog Grooming Care " + index;
+			case "dogtreats": return "Dog Treat Selection " + index;
+			case "catfood": return "Cat Nutrition Pack " + index;
+			case "cataccessories": return "Cat Accessory Essential " + index;
+			case "catgrooming": return "Cat Grooming Care " + index;
+			case "cattreats": return "Cat Treat Selection " + index;
+			case "Birds": return "Bird Care Product " + index;
+			case "fish": return "Fish Aquarium Product " + index;
+			default: return "Pet Product " + index;
+		}
+	}
+
+	private int buildSeedCost(String category, int index) {
+		int base;
+		switch (category) {
+			case "dogfood":
+			case "catfood":
+				base = 499;
+				break;
+			case "dogaccessories":
+			case "cataccessories":
+				base = 299;
+				break;
+			case "doggrooming":
+			case "catgrooming":
+				base = 249;
+				break;
+			case "dogtreats":
+			case "cattreats":
+				base = 199;
+				break;
+			case "Birds":
+			case "fish":
+				base = 149;
+				break;
+			default:
+				base = 199;
+		}
+		return base + (index * 35);
+	}
+
+	private String buildSeedDetails(String category) {
+		switch (category) {
+			case "dogfood": return "Wholesome food option for dogs with balanced daily nutrition.";
+			case "dogaccessories": return "Useful accessory for dog comfort, play, travel, or feeding.";
+			case "doggrooming": return "Grooming product for a clean coat, paws, and healthy care routine.";
+			case "dogtreats": return "Tasty reward for dogs during training, play, or daily bonding.";
+			case "catfood": return "Balanced food option for cats with everyday nourishment.";
+			case "cataccessories": return "Useful accessory for cat comfort, play, litter, or travel.";
+			case "catgrooming": return "Grooming product for clean fur, gentle care, and freshness.";
+			case "cattreats": return "Tasty reward for cats during play, training, or daily bonding.";
+			case "Birds": return "Bird care item for feeding, comfort, play, or cage enrichment.";
+			case "fish": return "Aquarium care item for feeding, tank setup, or fish wellness.";
+			default: return "Reliable pet care product for daily use.";
+		}
 	}
 
 
@@ -570,10 +724,43 @@ public class Registration {
 				p.setP_info(rs.getString("p_info"));
 				al.add(p);
 			}
+			if (al.isEmpty()) {
+				al.addAll(getProductDetailsFromProduct(pid));
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return al;
+	}
+
+	private ArrayList<Product> getProductDetailsFromProduct(int pid) {
+		ArrayList<Product> fallback = new ArrayList<Product>();
+		String query = "SELECT * FROM products WHERE p_id = ?";
+		try (PreparedStatement ps = con.prepareStatement(query)) {
+			ps.setInt(1, pid);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					Product p = new Product();
+					String image = rs.getString("p_image");
+					String name = rs.getString("p_name");
+					String details = rs.getString("p_details");
+					String category = rs.getString("p_category");
+					p.setP_id(rs.getString("p_id"));
+					p.setP_name(name);
+					p.setP_image(image);
+					p.setP_image1(image);
+					p.setP_image2(image);
+					p.setP_cost(rs.getString("p_cost"));
+					p.setP_details(details);
+					p.setP_category(category);
+					p.setP_info(name + " is available from Hub4Pets. " + details);
+					fallback.add(p);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fallback;
 	}
 
 
@@ -790,4 +977,3 @@ public class Registration {
 
 
 }
-
