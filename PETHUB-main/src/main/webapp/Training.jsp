@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dog Training Videos</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dog Training Videos</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -60,7 +62,7 @@
             font-size: 0.9em;
             color: #777;
         }
-       
+
     </style>
 </head>
 <body>

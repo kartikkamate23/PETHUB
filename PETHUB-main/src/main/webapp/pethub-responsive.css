@@ -3,6 +3,12 @@ html {
     scroll-behavior: smooth;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     overflow-x: hidden;
     animation: pethubPageIn .55s ease both;
@@ -18,6 +24,10 @@ table {
 }
 
 input, select, textarea, button {
+    max-width: 100%;
+}
+
+iframe {
     max-width: 100%;
 }
 
@@ -204,8 +214,79 @@ textarea:focus {
 .cards,
 .card-container,
 .container,
-.parent {
+.parent,
+.table-container,
+.table-wrapper,
+.form-container {
     max-width: 100%;
+}
+
+.table-container,
+.table-wrapper,
+.table-responsive,
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.product-container {
+    gap: 20px;
+}
+
+.product-card {
+    width: min(100%, 350px);
+}
+
+.product-image img,
+#mainProductImage {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+}
+
+.nav-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button-container {
+    gap: 10px;
+}
+
+.thumbnail {
+    width: 72px !important;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.parentlogin {
+    width: min(92vw, 800px) !important;
+    max-width: 800px;
+    margin: 24px auto !important;
+}
+
+form#login {
+    padding: 0 12px;
+}
+
+body > .container[id="container"],
+#signup + .login,
+.container[id="container"] {
+    max-width: min(92vw, 460px);
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+footer {
+    gap: 10px;
+}
+
+.popular-searches {
+    width: 100%;
+    margin-left: 24px !important;
+    margin-right: 24px !important;
 }
 
 @media (max-width: 1024px) {
@@ -219,6 +300,19 @@ textarea:focus {
 
     .product-card {
         width: min(100%, 320px) !important;
+    }
+
+    .header .logos {
+        position: static !important;
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .header .logos img {
+        margin-left: 0 !important;
     }
 }
 
@@ -240,7 +334,11 @@ textarea:focus {
     .section,
     .content,
     .main,
-    .form-container {
+    .main2,
+    .form-container,
+    .product-content,
+    .table-container,
+    .table-wrapper {
         width: calc(100% - 24px) !important;
         margin-left: auto !important;
         margin-right: auto !important;
@@ -264,7 +362,222 @@ textarea:focus {
         margin-right: 0 !important;
     }
 
+    .header {
+        padding: 28px 12px !important;
+    }
+
+    .header h1 {
+        font-size: clamp(26px, 8vw, 38px);
+    }
+
+    .banner {
+        min-height: 420px;
+        height: 58vh !important;
+        background-position: center;
+    }
+
+    .banner .banner_text {
+        width: min(88%, 420px) !important;
+        height: auto !important;
+        inset: auto auto 30px 6% !important;
+        margin: 0 !important;
+    }
+
+    .banner .banner_text p {
+        padding-bottom: 12px !important;
+        letter-spacing: 1px !important;
+    }
+
+    .product-list,
+    .parent1 {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .product-list .child,
+    .parent1 .child {
+        width: 100% !important;
+    }
+
+    .button-container {
+        flex-direction: column;
+    }
+
+    .add-to-cart,
+    .wishlist,
+    .quantity-select,
+    .btn-submit {
+        width: 100%;
+    }
+
+    .d-flex.mt-2 {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .emoji-rating {
+        flex-wrap: wrap;
+    }
+
+    .parentlogin {
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .loginimg {
+        min-height: 190px;
+        max-height: 240px;
+    }
+
+    .parentlogin .login {
+        padding: 26px 18px !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+
+    .container[id="container"] table,
+    .container[id="container"] tbody,
+    .container[id="container"] tr,
+    .container[id="container"] td {
+        display: block;
+        width: 100%;
+    }
+
+    .main,
+    .main2 {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 18px;
+        padding: 18px 0 !important;
+        align-items: start !important;
+        justify-items: center !important;
+    }
+
+    .main > .container,
+    .main2 > .container {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0;
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .main-image img,
+    .main-image2 img {
+        width: 100% !important;
+        max-width: 420px;
+        height: auto !important;
+        position: static !important;
+        left: auto !important;
+    }
+
+    .section1,
+    .section2 {
+        position: static !important;
+        width: 100% !important;
+        max-width: 560px;
+        text-align: left !important;
+    }
+
+    .space {
+        margin-top: 28px !important;
+    }
+
+    .cloud {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 0;
+        padding: 8px 12px !important;
+        background: #fff7d6 !important;
+        border: 1px solid rgba(217, 119, 6, .25);
+        border-radius: 999px;
+        color: #8a3c00;
+        transform: none !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 2px;
+    }
+
+    .cloud h6,
+    .cloud > h6 {
+        transform: none !important;
+        position: static !important;
+        top: auto !important;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.25;
+    }
+
+    footer {
+        padding: 36px 18px !important;
+        justify-content: flex-start !important;
+    }
+
+    .footer-column {
+        flex: 1 1 100% !important;
+        margin: 12px 0 !important;
+    }
+
+    .newsletter input[type="email"],
+    .newsletter button {
+        width: 100% !important;
+        margin: 6px 0 !important;
+    }
+
     table {
-        min-width: 680px;
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    header {
+        gap: 10px;
+    }
+
+    header .logo img {
+        height: 56px !important;
+    }
+
+    header .header_right {
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    .nav-buttons .btn {
+        width: calc(50% - 8px);
+        margin: 0 !important;
+        text-align: center;
+        padding: 10px 8px !important;
+        white-space: normal;
+    }
+
+    .product-card {
+        padding: 18px !important;
+        margin: 12px 0 !important;
+    }
+
+    .product-title,
+    .price {
+        font-size: 1.25rem !important;
+    }
+
+    .parentlogin {
+        width: calc(100vw - 20px) !important;
+    }
+
+    .loginimg {
+        display: none !important;
+    }
+
+    .popular-searches {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
     }
 }

@@ -2,14 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nutrition Guidelines for Pets</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition Guidelines for Pets</title>
     <style>
         body {
             font-family: 'Georgia', serif;
             margin: 0;
             padding: 20px;
             color: #333;
-           
+
         }
         h1 {
             text-align: center;
@@ -68,7 +70,7 @@
 .btn:active {
     transform: translateY(1px);
 }
-       
+
     </style>
 </head>
 <body>

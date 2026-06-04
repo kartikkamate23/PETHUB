@@ -5,7 +5,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
   body {
     font-family: 'Roboto', sans-serif;
     background-color: #fdf6e3; 
@@ -148,14 +150,14 @@
     border-radius:50%;
     margin-left: 10px; 
 }
-  
+
   </style>
 </head>
 <%@include file="Header1.jsp"%>
 <body>
 <div class="header">
     <h1>Welcome to Our Pet Shop!</h1>
-   
+
     <div class="logos">
         <a href="dog.jsp?animal=dogfood"><img src="Images1/doglogo.avif" alt="Dog Logo"></a>
         <a href="Cat.jsp?animal=catfood"><img src="Images1/catlogo.png" alt="Bird Logo"></a>
@@ -164,7 +166,7 @@
 </div>
 
 <div class="container">
-    
+
     <div class="product-container">
         <%
             Registration r = new Registration(session);
@@ -180,7 +182,7 @@
                         </div>
                         <h2 class="product-title"><%= s.getp_name() %></h2>
                         <p class="price">&#8377; <%= s.getP_cost() %></p>
-                        
+
                         <p class="availability">In Stock</p>
                         <p class="delivery-info">Free shipping on orders over &#8377; 1000!</p>
                         <form action="addtocart" method="post" style="width: 100%;">
@@ -198,7 +200,7 @@
                                 <p style="text-align: center;">Please log in to add items to your cart.</p>
                             <% } %>
                         </form>
-                        
+
                     </div>
         <%
                 }
