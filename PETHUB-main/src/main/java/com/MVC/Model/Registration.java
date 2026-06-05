@@ -290,31 +290,48 @@ public class Registration {
 		return status;
 	}
 	public ArrayList<Dproduct> get_productinfo(String animal) {
-		Statement st = null;
-		ResultSet rs = null;
-		ArrayList<Dproduct> al = new ArrayList<Dproduct>();
-		try {
-			ensureCategorySeeded(animal);
-			st = con.createStatement();
-			String qry = "select * from products where p_category='" + animal + "';";
-			rs = st.executeQuery(qry);
-			while (rs.next()) {
-				Dproduct p = new Dproduct();
-				p.setp_id(rs.getString("p_id"));
-				p.setp_image(rs.getString("p_image"));
-				p.setp_name(rs.getString("p_name"));
-				p.setP_cost(rs.getDouble("p_cost"));
-				p.setp_details(rs.getString("p_details"));
 
-				al.add(p);
-			}
+    Statement st = null;
+    ResultSet rs = null;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return al;
-	}
+    ArrayList<Dproduct> al = new ArrayList<Dproduct>();
 
+    try {
+
+        System.out.println("ANIMAL = " + animal);
+
+        ensureCategorySeeded(animal);
+
+        st = con.createStatement();
+
+        String qry =
+            "select * from products where p_category='" + animal + "'";
+
+        System.out.println("QUERY = " + qry);
+
+        rs = st.executeQuery(qry);
+
+        while (rs.next()) {
+
+            Dproduct p = new Dproduct();
+
+            p.setp_id(rs.getString("p_id"));
+            p.setp_image(rs.getString("p_image"));
+            p.setp_name(rs.getString("p_name"));
+            p.setP_cost(rs.getDouble("p_cost"));
+            p.setp_details(rs.getString("p_details"));
+
+            al.add(p);
+        }
+
+        System.out.println("TOTAL PRODUCTS = " + al.size());
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return al;
+}
 	private static final int MIN_PRODUCTS_PER_CATEGORY = 15;
 
 	private static final Map<String, String[]> SEED_IMAGES = new HashMap<>();
