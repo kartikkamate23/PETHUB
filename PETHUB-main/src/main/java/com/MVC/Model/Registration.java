@@ -296,21 +296,26 @@ public class Registration {
 
     try {
 
+        System.out.println("========== START ==========");
         System.out.println("ANIMAL = " + animal);
 
-        ensureCategorySeeded(animal);
-
         String qry =
-            "select * from products where p_category='" + animal + "'";
+                "select * from products where p_category='" + animal + "'";
 
         System.out.println("QUERY = " + qry);
 
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(qry);
 
+        int count = 0;
+
         while (rs.next()) {
 
-            System.out.println("FOUND = " + rs.getString("p_name"));
+            count++;
+
+            System.out.println(
+                    "FOUND PRODUCT = " +
+                    rs.getString("p_name"));
 
             Dproduct p = new Dproduct();
 
@@ -323,11 +328,13 @@ public class Registration {
             al.add(p);
         }
 
-        System.out.println("TOTAL PRODUCTS = " + al.size());
+        System.out.println("DB COUNT = " + count);
+        System.out.println("ARRAYLIST SIZE = " + al.size());
+        System.out.println("========== END ==========");
 
     } catch (Exception e) {
 
-        System.out.println("ERROR IN get_productinfo()");
+        System.out.println("ERROR OCCURRED");
         e.printStackTrace();
     }
 
