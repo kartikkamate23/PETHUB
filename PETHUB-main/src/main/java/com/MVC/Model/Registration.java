@@ -289,12 +289,10 @@ public class Registration {
 		}
 		return status;
 	}
+	
 	public ArrayList<Dproduct> get_productinfo(String animal) {
 
-    Statement st = null;
-    ResultSet rs = null;
-
-    ArrayList<Dproduct> al = new ArrayList<Dproduct>();
+    ArrayList<Dproduct> al = new ArrayList<>();
 
     try {
 
@@ -302,16 +300,17 @@ public class Registration {
 
         ensureCategorySeeded(animal);
 
-        st = con.createStatement();
-
         String qry =
             "select * from products where p_category='" + animal + "'";
 
         System.out.println("QUERY = " + qry);
 
-        rs = st.executeQuery(qry);
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(qry);
 
         while (rs.next()) {
+
+            System.out.println("FOUND = " + rs.getString("p_name"));
 
             Dproduct p = new Dproduct();
 
@@ -327,6 +326,8 @@ public class Registration {
         System.out.println("TOTAL PRODUCTS = " + al.size());
 
     } catch (Exception e) {
+
+        System.out.println("ERROR IN get_productinfo()");
         e.printStackTrace();
     }
 
